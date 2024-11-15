@@ -4,4 +4,6 @@
     export let data;
 </script>
 
-<GDoc data={data} />
+{#if data.pageType == 'gdoc'}
+    <GDoc data={data} />
+{/if}

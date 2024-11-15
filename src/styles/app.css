@@ -1,0 +1,33 @@
+:root {
+	--dark-green: #31662a;
+	--medium-green: #598653;
+	--light-green: #71956c;
+	--dark-gray: #656565;
+	--light-gray: #e5e5e5;
+	--census-dark-blue: #246192; /* true census color */
+	--census-medium-blue: #4077a4;
+	--census-light-blue: #6095c1;
+	--slate: #688dbc;
+
+	--body-width: 600px;
+
+	--box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 4px;
+}
+
+@font-face {
+    font-family: 'Geist';
+    font-style: normal;
+    font-weight: 100 900;
+    src: local(''), url('/fonts/Geist-1.3.0/variable-woff/GeistVF.woff2') format('woff2'),
+        url('/fonts/Geist-1.3.0/variable-woff/GeistVF.woff') format('woff'),
+}
+
+body {
+	margin: 0px;
+	margin-top: 80px;
+	font-family: Geist;
+}
+
+button {
+	font-family: inherit;
+}
