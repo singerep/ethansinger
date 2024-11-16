@@ -38,21 +38,22 @@ async function loadAi2HtmlFiles(slug) {
 }
 
 async function loadPageData(slug) {
-    const page = JSON.parse(fs.readFileSync(`static/pages/${slug}/page.json`))
-    if (page.type == 'gdoc') {
-        if (false) {
-            const fetchedPageData = await fetchPageData(page.id)
-            page.pageData = fetchedPageData
-            fs.writeFileSync(`static/pages/${slug}/page.json`, JSON.stringify(page))
-            return page
-        }
-        else {
-            return page
-        }
-    }
-    else {
-        // idk
-    }
+    // const page = JSON.parse(fs.readFileSync(`static/pages/${slug}/page.json`))
+    // if (page.type == 'gdoc') {
+    //     if (false) {
+    //         const fetchedPageData = await fetchPageData(page.id)
+    //         page.pageData = fetchedPageData
+    //         fs.writeFileSync(`static/pages/${slug}/page.json`, JSON.stringify(page))
+    //         return page
+    //     }
+    //     else {
+    //         return page
+    //     }
+    // }
+    // else {
+    //     // idk
+    // }
+    return {pageType: 'gDoc', pageData: {blocks: []}}
 };
 
 export async function genericPageLoad({ params }) {
