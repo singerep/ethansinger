@@ -57,10 +57,14 @@ async function loadPageData(slug) {
 
 export async function genericPageLoad({ params }) {
     const slug = params.slug
-    const page = await loadPageData(slug)
-    const generalComponentFiles = await loadGeneralComponentFiles()
-    const pageComponentFiles = await loadPageComponentFiles(slug)
-    const Ai2HtmlFiles = await loadAi2HtmlFiles(slug)
+    // const page = await loadPageData(slug)
+    const page = await {pageType: 'gDoc', pageData: {blocks: []}}
+    // const generalComponentFiles = await loadGeneralComponentFiles()
+    const generalComponentFiles = await []
+    // const pageComponentFiles = await loadPageComponentFiles(slug)
+    const pageComponentFiles = await []
+    // const Ai2HtmlFiles = await loadAi2HtmlFiles(slug)
+    const Ai2HtmlFiles = await []
     return {
         slug: slug,
         pageType: page.type,
