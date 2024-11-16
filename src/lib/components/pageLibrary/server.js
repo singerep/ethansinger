@@ -40,7 +40,7 @@ async function loadAi2HtmlFiles(slug) {
 async function loadPageData(slug) {
     const page = JSON.parse(fs.readFileSync(`static/pages/${slug}/page.json`))
     if (page.type == 'gdoc') {
-        if (dev) {
+        if (false) {
             const fetchedPageData = await fetchPageData(page.id)
             page.pageData = fetchedPageData
             fs.writeFileSync(`static/pages/${slug}/page.json`, JSON.stringify(page))
@@ -57,8 +57,8 @@ async function loadPageData(slug) {
 
 export async function genericPageLoad({ params }) {
     const slug = params.slug
-    // const page = await loadPageData(slug)
-    const page = await {pageType: 'gDoc', pageData: {blocks: []}}
+    const page = await loadPageData(slug)
+    // const page = await {pageType: 'gDoc', pageData: {blocks: []}}
     // const generalComponentFiles = await loadGeneralComponentFiles()
     const generalComponentFiles = await []
     // const pageComponentFiles = await loadPageComponentFiles(slug)
