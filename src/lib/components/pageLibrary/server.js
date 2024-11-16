@@ -61,6 +61,7 @@ async function loadPageData(slug) {
     //     // idk
     // }
     return {pageType: 'gDoc', pageData: {blocks: []}}
+    
 };
 
 export async function genericPageLoad({ params }) {
