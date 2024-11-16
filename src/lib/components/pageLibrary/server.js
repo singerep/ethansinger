@@ -1,6 +1,7 @@
 import { dev } from '$app/environment';
 import axios from 'axios';
 import fs from 'fs'
+import path from 'path';
 
 async function fetchPageData(id) {
     let response;
