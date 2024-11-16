@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { read } from '/server';
+import { read } from '$app/server';
 import axios from 'axios';
 import fs from 'fs'
 import path from 'path';
