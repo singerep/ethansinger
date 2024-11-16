@@ -1,12 +1,18 @@
 <script>
     import { fade, slide } from 'svelte/transition';
     import NavbarElement from '$lib/components/navbar/NavbarElement.svelte';
+	import { onMount } from 'svelte';
+
+    let mounted = false;
+
+    onMount(() => {
+        mounted = true
+    })
 
     const groups = [
         {
             slots: [
                 {
-                    type: 'link',
                     collapse: false,
                     props: {
                         label: 'Ethan Singer',
@@ -21,45 +27,33 @@
         {
             slots: [
                 {
-                    type: 'link',
                     collapse: true,
                     props: {
                         label: 'research',
-                        path: '/research',
+                        path: '/#research',
                     }
                 },
-                // {
-                //     type: 'link',
-                //     collapse: true,
-                //     props: {
-                //         label: 'projects/blog',
-                //         path: '/pages',
-                //     }
-                // },
                 {
-                    type: 'link',
                     collapse: true,
                     props: {
                         label: 'software',
-                        path: '/software',
+                        path: '/#software',
+                    }
+                },
+                {
+                    collapse: true,
+                    props: {
+                        label: 'teaching',
+                        path: '/#teaching',
                     }
                 },
                 // {
-                //     type: 'link',
                 //     collapse: true,
                 //     props: {
-                //         label: 'data',
-                //         path: '/data',
+                //         label: 'misc.',
+                //         path: '/misc',
                 //     }
-                // },
-                {
-                    type: 'link',
-                    collapse: true,
-                    props: {
-                        label: 'misc.',
-                        path: '/misc',
-                    }
-                }
+                // }
             ],
             style: 'justify-content: flex-end; gap: 30px;'
         }
@@ -77,14 +71,14 @@
     var isOpen = false
     $: isMobile = outerWidth < 600
 
-    let calculateMargin = (i, j) => {return ((i == 0 && j == 0)) ? '15px 15px 15px 0px' : (((i == groups.length - 1) && (j == groups[i].slots.length - 1)) ? '15px 0px 15px 15px' : '15px')}
 </script>
 
 <svelte:window bind:innerWidth bind:outerWidth bind:innerHeight bind:outerHeight />
 
+{#if mounted}
 <div class="navbar-container {isOpen ? 'open' : 'closed'}">
     <div class="navbar">
-        {#if !isMobile}
+        {#if isMobile == false}
             {#each groups as group, i}
                 <div class="navbar-group" style="{group.style}">
                     {#each group.slots as slot, j}
@@ -92,7 +86,7 @@
                     {/each}
                 </div>
             {/each}
-    {   :else}
+        {:else}
             <div class="navbar-group" style="justify-content: space-between; width: 100%">
                 {#each noCollapseSlots as slot, i}
                     <NavbarElement {...slot.props}/>
@@ -121,9 +115,8 @@
             {/each}
         </div>
     {/if}
-</div>
-
-
+</div>    
+{/if}
 
 <style>
     div.navbar-container {

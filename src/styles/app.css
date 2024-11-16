@@ -22,12 +22,24 @@
         url('/fonts/Geist-1.3.0/variable-woff/GeistVF.woff') format('woff'),
 }
 
+html {
+	scroll-padding-top: 80px; /* Offset for fixed header */
+}
+
 body {
 	margin: 0px;
 	margin-top: 80px;
 	font-family: Geist;
+	scroll-padding-top: 200px;
 }
 
 button {
 	font-family: inherit;
+}
+
+:target::before {
+    display: block;    
+    position: relative;     
+    top: -500px;
+    visibility: hidden;
 }

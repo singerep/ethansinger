@@ -8,7 +8,15 @@
     $: Ai2HtmlFiles = {}
 
     onMount(async () => {
-        await data.componentFiles.forEach(async (f) => {
+        await data.generalComponentFiles.forEach(async (f) => {
+            const module = await import(`../../../lib/components/general/${f.split('.')[0]}.svelte`);
+            components[f.split('.')[0]] = module.default;
+        })
+
+        await data.pageComponentFiles.forEach(async (f) => {
+            if (data.generalComponentFiles.includes(f)) {
+                console.error('Duplicate component name:', f.split('.')[0])
+            }
             const module = await import(`../../../lib/pages/${data.slug}/${f.split('.')[0]}.svelte`);
             components[f.split('.')[0]] = module.default;
         })
@@ -35,7 +43,11 @@
     {#if data.pageData.blocks}
         {#each data.pageData.blocks as block}
             {#if block.type == 'h2'}
-                <h2>{@html block.value}</h2>
+                <h2 id="{block.id ?? ''}">{@html block.value}</h2>
+            {:else if block.type == 'h3'}
+                <h3 id="{block.id ?? ''}">{@html block.value}</h3>
+            {:else if block.type == 'hr'}
+                <hr>
             {:else if block.type == 'text'}
                 <p>{@html block.value}</p>
             {:else if block.type == 'graphic'}
@@ -58,5 +70,15 @@
 
     div.page-content :global(a) {
         color: var(--slate);
+    }
+
+    h2 :global(a) {
+        color: black!important;
+    }
+
+    hr {
+        background-color: rgb(237, 237, 237);
+        border: none;
+        height: 1.5px;
     }
 </style>

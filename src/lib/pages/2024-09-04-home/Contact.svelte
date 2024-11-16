@@ -4,7 +4,7 @@
     const contacts = [
         {
             displayText: 'singerep@bu.edu',
-            link: 'mailto:singerep@bu.edu',
+            link: 'mailto:ethan.singer@nytimes.com',
             icon: '<i class="fa-solid fa-envelope"></i>'
         },
         {
@@ -16,6 +16,11 @@
             displayText: 'ethanpsinger',
             link: 'https://www.linkedin.com/in/ethanpsinger/',
             icon: '<i class="fa-brands fa-linkedin"></i>'
+        },
+        {
+            displayText: 'singerep',
+            link: 'https://github.com/singerep',
+            icon: '<i class="fa-brands fa-github"></i>'
         }
     ]
 </script>
@@ -26,22 +31,22 @@
             <div class="contact-icon">
                 {@html contact.icon}
             </div>
-            <div class="contact-display-text">
+            <!-- <div class="contact-display-text">
                 {contact.displayText}
-            </div>
+            </div> -->
         </a>
     {/each}
 </div>
 
 <style>
     div.contact-bar {
-        margin-top: 30px;
+        margin: 30px 0px;
         width: 100%;
         display: flex;
         justify-content: space-around;
         background-color: #688dbc;
         border-radius: 10px;
-        padding: 15px 20px;
+        padding: 13px 20px;
         box-sizing: border-box;
     }
 
@@ -72,6 +77,7 @@
     }
 
     div.contact-icon {
+        color: white;
         font-size: 23px;
     }
 </style>

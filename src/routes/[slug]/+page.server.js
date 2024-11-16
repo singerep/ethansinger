@@ -3,7 +3,9 @@ import { genericPageLoad } from '$lib/components/pageLibrary/server.js';
 const slugMappings = {
     'research': '2024-09-07-research',
     'pages': '2024-09-08-projects-blog',
-    'software': '2024-09-08-software'
+    'software': '2024-09-08-software',
+    'work': '2024-11-15-work',
+    'misc': '2024-11-15-work'
 }
 
 export async function load({ params }) {

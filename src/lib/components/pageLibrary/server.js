@@ -25,7 +25,11 @@ async function fetchPageData(id) {
     }
 }
 
-async function loadComponentFiles(slug) {
+async function loadGeneralComponentFiles(slug) {
+    return fs.readdirSync(`src/lib/components/general`);
+}
+
+async function loadPageComponentFiles(slug) {
     return fs.readdirSync(`src/lib/pages/${slug}`);
 }
 
@@ -36,7 +40,7 @@ async function loadAi2HtmlFiles(slug) {
 async function loadPageData(slug) {
     const page = JSON.parse(fs.readFileSync(`static/pages/${slug}/page.json`))
     if (page.type == 'gdoc') {
-        if (true) {
+        if (dev) {
             const fetchedPageData = await fetchPageData(page.id)
             page.pageData = fetchedPageData
             fs.writeFileSync(`static/pages/${slug}/page.json`, JSON.stringify(page))
@@ -54,13 +58,15 @@ async function loadPageData(slug) {
 export async function genericPageLoad({ params }) {
     const slug = params.slug
     const page = await loadPageData(slug)
-    const componentFiles = await loadComponentFiles(slug)
+    const generalComponentFiles = await loadGeneralComponentFiles()
+    const pageComponentFiles = await loadPageComponentFiles(slug)
     const Ai2HtmlFiles = await loadAi2HtmlFiles(slug)
     return {
         slug: slug,
         pageType: page.type,
         pageData: page.pageData,
-        componentFiles: componentFiles,
+        generalComponentFiles: generalComponentFiles,
+        pageComponentFiles: pageComponentFiles,
         Ai2HtmlFiles: Ai2HtmlFiles
     }
 }
