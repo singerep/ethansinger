@@ -44,7 +44,7 @@ async function loadAi2HtmlFiles(slug) {
 }
 
 async function loadPageData(slug) {
-    // fs.readFileSync(`/pages/${slug}/page.json`)
+    console.log(fs.readFileSync(`../../../../static/pages/2024-09-01-test/page.json`))
     // console.log('Current directory: ' + process.cwd());
     // console.log('Current directory: ' + path.join(process.cwd(), '/pages/2024-09-04-home/page.json'));
     // console.log(fs.readFileSync(`static/pages/2024-09-04-home/page.json`))
