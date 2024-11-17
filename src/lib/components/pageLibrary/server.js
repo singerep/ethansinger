@@ -4,7 +4,7 @@ import axios from 'axios';
 import fs from 'fs'
 import path from 'path';
 
-const staticFiles = import.meta.glob('../../../../static/**')
+const staticFiles = import.meta.glob('../../../../static/**/*.json')
 
 console.log(staticFiles)
 
