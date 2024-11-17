@@ -31,9 +31,6 @@
             <div class="contact-icon">
                 {@html contact.icon}
             </div>
-            <!-- <div class="contact-display-text">
-                {contact.displayText}
-            </div> -->
         </a>
     {/each}
 </div>
@@ -46,7 +43,7 @@
         justify-content: space-around;
         background-color: #688dbc;
         border-radius: 10px;
-        padding: 13px 20px;
+        padding: 13px;
         box-sizing: border-box;
     }
 
