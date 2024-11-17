@@ -9,21 +9,25 @@
 
     onMount(async () => {
         await data.generalComponentFiles.forEach(async (f) => {
-            const module = await import(`../../../lib/components/general/${f.split('.')[0]}.svelte`);
-            components[f.split('.')[0]] = module.default;
+            const name = f.split('/').pop().split('.')[0]
+            const module = await import(`../../../lib/components/general/${name}.svelte`);
+            components[name] = module.default;
         })
 
         await data.pageComponentFiles.forEach(async (f) => {
-            if (data.generalComponentFiles.includes(f)) {
+            const name = f.split('/').pop().split('.')[0]
+            if (name in components) {
                 console.error('Duplicate component name:', f.split('.')[0])
             }
-            const module = await import(`../../../lib/pages/${data.slug}/${f.split('.')[0]}.svelte`);
-            components[f.split('.')[0]] = module.default;
+            const module = await import(`../../../lib/pages/${data.slug}/${name}.svelte`);
+            components[name] = module.default;
         })
 
         await data.Ai2HtmlFiles.forEach(async (f) => {
-            const file = await fetch(`/pages/${data.slug}/ai/ai2html-output/${f.split('.')[0]}.html`)
-            Ai2HtmlFiles[f.split('.')[0]] = await file.text()
+            const name = f.split('/').pop().split('.')[0]
+            const url = f.split('static').pop()
+            const file = await fetch(url)
+            Ai2HtmlFiles[name] = await file.text()
         })
     })
 
