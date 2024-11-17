@@ -7,7 +7,9 @@ import path from 'path';
 const staticFiles = import.meta.glob('../../../../static/pages/**/*.json')
 const pageComponentFiles = import.meta.glob('../../pages/**/*.svelte')
 const generalComponentFiles = import.meta.glob('../general/*.svelte')
-const Ai2HtmlFiles = import.meta.glob('../../../../static/pages/**/*.html')
+const assetFiles = import.meta.glob('../../../../static/pages/*/assets/**/*')
+
+const supportAssetTypes = ['html', 'jpeg', 'jpg', 'png']
 
 async function fetchPageData(id) {
     let response;
@@ -40,9 +42,8 @@ async function loadPageComponentFiles(slug) {
     return Object.keys(pageComponentFiles).filter((f) => f.includes(slug))
 }
 
-async function loadAi2HtmlFiles(slug) {
-    return Object.keys(Ai2HtmlFiles).filter((f) => f.includes(slug))
-    // return fs.existsSync(`static/pages/${slug}/ai/ai2html-output`) ? fs.readdirSync(`static/pages/${slug}/ai/ai2html-output`).filter((f) => f.split('.')[1] == 'html') : [];
+async function loadAssetFiles(slug) {
+    return Object.keys(assetFiles).filter((f) => f.includes(slug) & supportAssetTypes.some((t) => f.includes('.' + t)))
 }
 
 async function loadPageData(slug) {
@@ -51,8 +52,10 @@ async function loadPageData(slug) {
         if (page.type == 'gdoc') {
             if (dev) {
                 const fetchedPageData = await fetchPageData(page.id)
-                page.pageData = fetchedPageData
-                fs.writeFileSync(`static/pages/${slug}/page.json`, JSON.stringify(page))
+                if (JSON.stringify(page.pageData) != JSON.stringify(fetchedPageData)) {
+                    page.pageData = fetchedPageData
+                    fs.writeFileSync(`static/pages/${slug}/page.json`, JSON.stringify(page))
+                }
                 return page
             }
             else {
@@ -69,19 +72,14 @@ export async function genericPageLoad({ params }) {
     const slug = params.slug
     const page = await loadPageData(slug)
     const generalComponentFiles = await loadGeneralComponentFiles()
-    // const generalComponentFiles = await []
-    // console.log(generalComponents)
-    // var pageComponentFiles = await loadPageComponentFiles(slug)
-    // pageComponentFiles = []
     const pageComponentFiles = await loadPageComponentFiles(slug)
-    const Ai2HtmlFiles = await loadAi2HtmlFiles(slug)
-    // const Ai2HtmlFiles = await []
+    const assetFiles = await loadAssetFiles(slug)
     return {
         slug: slug,
         pageType: page.type,
         pageData: page.pageData,
         generalComponentFiles: generalComponentFiles,
         pageComponentFiles: pageComponentFiles,
-        Ai2HtmlFiles: Ai2HtmlFiles
+        assetFiles: assetFiles
     }
 }

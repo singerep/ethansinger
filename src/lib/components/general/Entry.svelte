@@ -19,6 +19,19 @@
             <span class="description">{@html props.description}</span>
         </div>
     {/if}
+    {#if props.other}
+    <div class="other">
+        {#each props.other as other}
+           <span class="other">
+            {#if other.link}
+                <a href="{other.link}">{@html other.text}</a>
+            {:else}
+                {@html other.text}
+            {/if}
+           </span>
+        {/each}
+    </div>
+    {/if}
 </div>
 
 <style>
@@ -45,5 +58,12 @@
 
     span.description :global(a) {
         color: black!important;
+    }
+
+    span.other, span.other :global(a) {
+        color: #777;
+        font-weight: 300;
+        font-size: 13px;
+        /* text-decoration: none; */
     }
 </style>

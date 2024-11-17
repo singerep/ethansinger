@@ -3,7 +3,13 @@
 
     import Navbar from '$lib/components/navbar/Navbar.svelte'
     import Footer from '$lib/components/footer/Footer.svelte'
+
+    function handleError() {
+        console.log('here')
+    }
 </script>
+
+<svelte:window on:error={handleError}/>
 
 <Navbar />
 
@@ -25,5 +31,7 @@
         max-width: var(--body-width);
         padding: 20px;
         margin: auto;
+        box-sizing: border-box;
+        position: relative;
     }
 </style>

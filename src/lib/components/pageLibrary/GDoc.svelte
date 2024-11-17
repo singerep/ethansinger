@@ -1,11 +1,12 @@
 <script>
 	import { onMount } from 'svelte';
     import Ai2Html from '$lib/components/pageLibrary/Ai2Html.svelte';
+    import Img from '$lib/components/pageLibrary/Img.svelte';
 
     export let data;
     
     $: components = {}
-    $: Ai2HtmlFiles = {}
+    $: assets = {}
 
     onMount(async () => {
         await data.generalComponentFiles.forEach(async (f) => {
@@ -17,17 +18,20 @@
         await data.pageComponentFiles.forEach(async (f) => {
             const name = f.split('/').pop().split('.')[0]
             if (name in components) {
-                console.error('Duplicate component name:', f.split('.')[0])
+                console.error('Duplicate component name:', name)
             }
             const module = await import(`../../../lib/pages/${data.slug}/${name}.svelte`);
             components[name] = module.default;
         })
 
-        await data.Ai2HtmlFiles.forEach(async (f) => {
+        await data.assetFiles.forEach(async (f) => {
+            // should check for duplicate names here
             const name = f.split('/').pop().split('.')[0]
             const url = f.split('static').pop()
-            const file = await fetch(url)
-            Ai2HtmlFiles[name] = await file.text()
+            if (name in assets) {
+                console.error('Duplicate asset name:', name)
+            }
+            assets[name] = url
         })
     })
 
@@ -38,6 +42,12 @@
 
     function graphicProps(block) {
         var { graphic, ...rest } = block.value
+        rest.slug = data.slug
+        return rest
+    }
+
+    function imgProps(block) {
+        var { media, ...rest } = block.value
         rest.slug = data.slug
         return rest
     }
@@ -55,8 +65,12 @@
             {:else if block.type == 'text'}
                 <p>{@html block.value}</p>
             {:else if block.type == 'graphic'}
-                {#if Ai2HtmlFiles[block.value.graphic]}
-                    <Ai2Html htmlContent={Ai2HtmlFiles[block.value.graphic]} {...graphicProps(block)} />
+                {#if assets[block.value.graphic]}
+                    <Ai2Html htmlUrl={assets[block.value.graphic]} {...graphicProps(block)} />
+                {/if}
+            {:else if block.type == 'img'}
+                {#if assets[block.value.media]}
+                    <Img src={assets[block.value.media]} {...imgProps(block)} />
                 {/if}
             {:else if block.type == 'svelte'}
                 <svelte:component this={components[block.value.component]} {...componentProps(block)} />

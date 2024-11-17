@@ -1,19 +1,35 @@
 <script>
     import * as cheerio from 'cheerio'; 
+	import { onMount } from 'svelte';
     
     export let slug;
-    export let htmlContent;
+    export let htmlUrl;
+
+    let mounted = false;
+    let containerWidth;
 
     let htmlToRender;
+    let doc;
 
-    const doc = cheerio.load(htmlContent);
-    doc('img').each(function() {
-        const originalSrc = doc(this).attr('src');
-        doc(this).attr('src', `/pages/${slug}/ai/ai2html-output/` + originalSrc);
-    });
-    htmlToRender = doc.html()
+    onMount(async () => {
+        const file = await fetch(htmlUrl)
+        const htmlContent = await file.text()
+
+        doc = cheerio.load(htmlContent);
+
+        doc('img').each(function() {
+            const originalSrc = doc(this).attr('src');
+            doc(this).attr('src', `/pages/${slug}/assets/ai/ai2html-output/` + originalSrc);
+        });
+        htmlToRender = doc.html()
+        mounted = true
+        resize()
+    })
 
     function resize() {
+        if (!mounted) {
+            return
+        }
         if (containerWidth) {
             doc('div .g-artboard').each(function() {
                 const minWidth = parseInt(doc(this).attr('data-min-width'));
@@ -27,14 +43,12 @@
         }
     }
 
-    let containerWidth;
-
     $: containerWidth, resize()
 
 </script>
 
 <div class="graphic-container" bind:clientWidth={containerWidth}>
-    {@html htmlToRender}
+        {@html htmlToRender}
 </div>
 
 <style>

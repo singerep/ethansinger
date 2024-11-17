@@ -68,10 +68,6 @@
             font-size: 18px;
         }
     }
-    
-    a:hover div.contact-display-text {
-        text-decoration: underline;
-    }
 
     div.contact-icon {
         color: white;
