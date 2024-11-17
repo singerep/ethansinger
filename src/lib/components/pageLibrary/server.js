@@ -6,8 +6,6 @@ import path from 'path';
 
 const staticFiles = import.meta.glob('../../../../static/**/*.json')
 
-console.log(staticFiles)
-
 async function fetchPageData(id) {
     let response;
     let attempts;
@@ -44,27 +42,25 @@ async function loadAi2HtmlFiles(slug) {
 }
 
 async function loadPageData(slug) {
-    console.log(fs.readFileSync(path.join(process.cwd(), `../../../../static/pages/2024-09-01-test/page.json`)))
-    // console.log('Current directory: ' + process.cwd());
-    // console.log('Current directory: ' + path.join(process.cwd(), '/pages/2024-09-04-home/page.json'));
-    // console.log(fs.readFileSync(`static/pages/2024-09-04-home/page.json`))
-    // fs.readFileSync(path.join(process.cwd(), '/pages/2024-09-04-home/page.json'))
+    return staticFiles[`../../../../static/pages/${slug}/page.json`]().then(async (module) => {
+        const page = module.default
+        if (page.type == 'gdoc') {
+            if (dev) {
+                const fetchedPageData = await fetchPageData(page.id)
+                page.pageData = fetchedPageData
+                fs.writeFileSync(`static/pages/${slug}/page.json`, JSON.stringify(page))
+                return page
+            }
+            else {
+                return page
+            }
+        }
+        else {
+            // idk
+        }
+    })
     // const page = JSON.parse(fs.readFileSync(`static/pages/${slug}/page.json`))
-    // if (page.type == 'gdoc') {
-    //     if (false) {
-    //         const fetchedPageData = await fetchPageData(page.id)
-    //         page.pageData = fetchedPageData
-    //         fs.writeFileSync(`static/pages/${slug}/page.json`, JSON.stringify(page))
-    //         return page
-    //     }
-    //     else {
-    //         return page
-    //     }
-    // }
-    // else {
-    //     // idk
-    // }
-    return {pageType: 'gDoc', pageData: {blocks: []}}
+    // return {pageType: 'gDoc', pageData: {blocks: []}}
 };
 
 export async function genericPageLoad({ params }) {
