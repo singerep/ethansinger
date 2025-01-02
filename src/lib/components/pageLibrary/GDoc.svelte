@@ -4,46 +4,45 @@
     import Img from '$lib/components/pageLibrary/Img.svelte';
 
     export let data;
-    
+
     $: components = {}
     $: assets = {}
 
+    const genericComponents = Object.entries(import.meta.glob('$lib/components/generic/*.svelte'))
+    const pageComponents = Object.entries(
+        import.meta.glob('$lib/pages/**/*.svelte')
+    ).filter(f => f[0].includes(`pages/${data.pagePath}`))
+    
+    const usedComponents = Object.fromEntries(
+        [...new Set(data.blocks.filter(b => b.type == 'svelte').map(b => b.value.component))].map(c => 
+            pageComponents.find(([f, load]) => f.split('/').pop().split('.')[0] == c) ?? // preference for page specific components
+            genericComponents.find(([f, load]) => f.split('/').pop().split('.')[0] == c) ??
+            null
+        )
+    )
+
     onMount(async () => {
-        await data.generalComponentFiles.forEach(async (f) => {
+        Object.entries(usedComponents).forEach(async ([f, load]) => {
             const name = f.split('/').pop().split('.')[0]
-            const module = await import(`../../../lib/components/general/${name}.svelte`);
-            components[name] = module.default;
+            load().then((mod) => {
+                components[name] = mod.default
+            })
         })
 
-        await data.pageComponentFiles.forEach(async (f) => {
-            const name = f.split('/').pop().split('.')[0]
-            if (name in components) {
-                console.error('Duplicate component name:', name)
-            }
-            const module = await import(`../../../lib/pages/${data.slug}/${name}.svelte`);
-            components[name] = module.default;
-        })
-
-        await data.assetFiles.forEach(async (f) => {
-            // should check for duplicate names here
-            const name = f.split('/').pop().split('.')[0]
-            const url = f.split('static').pop()
-            if (name in assets) {
-                console.error('Duplicate asset name:', name)
-            }
-            assets[name] = url
-        })
+        // await data.assets.forEach(async (f) => {
+        //     // should check for duplicate names here
+        //     const name = f.split('/').pop().split('.')[0]
+        //     const url = f.split('static').pop()
+        //     if (name in assets) {
+        //         console.error('Duplicate asset name:', name)
+        //     }
+        //     assets[name] = url
+        // })
     })
 
     function componentProps(block) {
         const { component, ...rest } = block.value
         return rest;
-    }
-
-    function graphicProps(block) {
-        var { graphic, ...rest } = block.value
-        rest.slug = data.slug
-        return rest
     }
 
     function imgProps(block) {
@@ -54,8 +53,8 @@
 </script>
 
 <div class="page-content">
-    {#if data.pageData.blocks}
-        {#each data.pageData.blocks as block}
+    {#if data.blocks}
+        {#each data.blocks as block}
             {#if block.type == 'h2'}
                 <h2 id="{block.id ?? ''}">{@html block.value}</h2>
             {:else if block.type == 'h3'}
@@ -65,12 +64,10 @@
             {:else if block.type == 'text'}
                 <p>{@html block.value}</p>
             {:else if block.type == 'graphic'}
-                {#if assets[block.value.graphic]}
-                    <Ai2Html htmlUrl={assets[block.value.graphic]} {...graphicProps(block)} />
-                {/if}
+                <Ai2Html graphic={block.value.graphic} pagePath={data.pagePath} />
             {:else if block.type == 'img'}
                 {#if assets[block.value.media]}
-                    <Img src={assets[block.value.media]} {...imgProps(block)} />
+                    <!-- <Img src={assets[block.value.media]} {...imgProps(block)} /> -->
                 {/if}
             {:else if block.type == 'svelte'}
                 <svelte:component this={components[block.value.component]} {...componentProps(block)} />
@@ -80,7 +77,7 @@
 </div>
 
 <style>
-    div.page-content {
+    /* div.page-content {
         width: 100%;
         text-align: justify;
         line-height: calc(100% + 4px);
@@ -98,5 +95,5 @@
         background-color: rgb(237, 237, 237);
         border: none;
         height: 1.5px;
-    }
+    } */
 </style>

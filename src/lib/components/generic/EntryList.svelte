@@ -4,7 +4,7 @@
     export let entries;
     export let id;
 
-    import Entry from "$lib/components/general/Entry.svelte";
+    import Entry from "$lib/components/generic/Entry.svelte";
 </script>
 
 

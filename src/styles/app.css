@@ -43,3 +43,20 @@ button {
     top: -500px;
     visibility: hidden;
 }
+
+/* {
+    "tokens": {
+        "access_token": "ya29.a0AeDClZCJNIW5QDC0y9AxZTaFr6h4P_YaUfFF9qLuH3EavYlWyNZ83zl0sXUdes-Wpqbh_Pr42eq5PgzSDXL4jyufIP21spY44Lv98riKEhYN3_ctHwPyRedlgQ5rwgXkA17lOkBq4EpcfjbxeoZ42WqUMO4WRuyptLBvkOAKYwaCgYKAdESARMSFQHGX2MiNN27MEgSfzEjJFgZ9k1BUQ0177",
+        "refresh_token": "1//05p-d5aCzaBwbCgYIARAAGAUSNwF-L9IrUwlvY3imk9ADkaH3GDjmP1KTLWsnIfKVWYgKJ41LZ8EwdZjzt5QjqQ0htCMz453mFv0",
+        "scope": "https://www.googleapis.com/auth/documents.readonly",
+        "token_type": "Bearer",
+        "expiry_date": 1731910793790
+    },
+    "credentials": {
+        "redirect_uris": [
+            "http://127.0.0.1:6006/auth"
+        ],
+        "client_id": "161714874123-fvttr6skktes7vi1372fpr9a69nd8mrt.apps.googleusercontent.com",
+        "client_secret": "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"
+    }
+} */

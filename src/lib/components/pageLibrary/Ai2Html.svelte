@@ -2,24 +2,40 @@
     import * as cheerio from 'cheerio'; 
 	import { onMount } from 'svelte';
     
-    export let slug;
-    export let htmlUrl;
+    export let graphic;
+    export let pagePath;
+
+    const htmls = import.meta.glob('$lib/pages/**/*.html', {
+        query: '?raw',
+        import: 'default'
+    })
+    const jpgs = import.meta.glob('$lib/pages/**/*.jpg', {
+        query: '?url',
+        import: 'default',
+        eager: true
+    })
 
     let mounted = false;
     let containerWidth;
 
+    let htmlRaw;
     let htmlToRender;
     let doc;
 
     onMount(async () => {
-        const file = await fetch(htmlUrl)
-        const htmlContent = await file.text()
+        const key = Object.keys(htmls).find(
+            (f) => f.includes(`pages/${pagePath}`) && f.endsWith(`${graphic}.html`)
+        )
+        const path = key.split('/').slice(0, -1).join('/')
+        await htmls[key]().then((mod) => {
+            htmlRaw = mod
+        })
 
-        doc = cheerio.load(htmlContent);
+        doc = cheerio.load(htmlRaw);
 
         doc('img').each(function() {
             const originalSrc = doc(this).attr('src');
-            doc(this).attr('src', `/pages/${slug}/assets/ai/ai2html-output/` + originalSrc);
+            doc(this).attr('src', jpgs[path + `/${originalSrc}`]);
         });
         htmlToRender = doc.html()
         mounted = true
