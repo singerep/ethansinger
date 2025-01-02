@@ -1,5 +1,5 @@
-DATE := $(shell date +%Y-%m-%d)
-
-.SILENT: page
 page:
-	Node tools/createPage.cjs
+	node tools/create-page.mjs
+
+depage:
+	node tools/delete-page.mjs

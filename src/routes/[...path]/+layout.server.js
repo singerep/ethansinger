@@ -1,9 +1,10 @@
 import { page } from '$app/stores'; 
-import routes from "$lib/cms/gdocMap.json"
 import pkg from 'archieml'
 import { dev } from '$app/environment';
 import { mkdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import routes from '$lib/cms/routes.json'
+import { error } from '@sveltejs/kit';
 
 const blockFiles = import.meta.glob('$lib/pages/**/blocks.json')
 
@@ -67,12 +68,16 @@ function readElements(document) {
 }
 
 export async function load({ url, route, params, locals }) {
-    const pagePathParts = url.pathname.slice(1).split('/').map(p => p == '' ? 'index' : p)
-    const pagePath = pagePathParts.join('/')
+    if (!(`/${params.path}` in routes)) {
+        throw error(404, 'Page not found');
+    }
+
+    const pagePathParts = params.path.split('/').map(p => p == '' ? 'index' : p)
     let blocks;
 
     if (dev) {
-        const documentId = routes[url.pathname]
+        // TODO: this should check if page is a gdoc first
+        const documentId = routes[`/${params.path}`].gdocId
         const document = await locals.docsClient.documents.get({
             documentId
         });
@@ -97,6 +102,6 @@ export async function load({ url, route, params, locals }) {
 
     return {
         'blocks': blocks,
-        'pagePath': pagePath
+        'pagePath': params.path
     }
 }
