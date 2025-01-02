@@ -1,8 +1,7 @@
 import { google } from 'googleapis';
 import { redirect } from '@sveltejs/kit';
+import { dev } from '$app/environment';
 import { CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
-
-console.log(CLIENT_ID, CLIENT_SECRET)
 
 const oauth2Client = new google.auth.OAuth2(
     CLIENT_ID,
@@ -12,8 +11,10 @@ const oauth2Client = new google.auth.OAuth2(
 
 const SCOPES = ['https://www.googleapis.com/auth/documents.readonly'];
 
-// this should only run in dev
 export async function GET({ cookies, url }) {
+    if (!dev){
+        throw redirect(303, '/')
+    }
     const code = url.searchParams.get('code');
     
     if (code) {

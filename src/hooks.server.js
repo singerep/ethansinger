@@ -15,7 +15,7 @@ const oauth2Client = new google.auth.OAuth2(
 
 export async function handle({ event, resolve }) {
     if (!dev){
-        return
+        return resolve(event);
     }
     const session = event.cookies.get('google_session');
     
