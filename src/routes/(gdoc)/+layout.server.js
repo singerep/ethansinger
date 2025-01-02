@@ -7,21 +7,6 @@ import { join } from 'node:path';
 
 const blockFiles = import.meta.glob('$lib/pages/**/blocks.json')
 
-async function filterGeneralComponents(pagePathParts, usedComponents) {
-    return Object.keys(generalComponents)
-}
-
-function filterComponents(pagePathParts, usedComponents) {
-    return allComponents.filter(c => {
-        const name = c.split('/').pop().split('.')[0]
-        return usedComponents.includes(name) && (c.includes(join('pages', ...pagePathParts)) || c.includes('components/general'))
-    })
-}
-
-function filterAssets(pagePathParts) {
-    return assets.filter(a => a.includes(join('pages', ...pagePathParts)))
-}
-
 function readParagraphElement(element) {
     const textRun = element.textRun;
 
@@ -86,7 +71,7 @@ export async function load({ url, route, params, locals }) {
     const pagePath = pagePathParts.join('/')
     let blocks;
 
-    if (dev && false) {
+    if (dev) {
         const documentId = routes[url.pathname]
         const document = await locals.docsClient.documents.get({
             documentId

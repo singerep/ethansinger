@@ -1,9 +1,12 @@
 import { google } from 'googleapis';
 import { redirect } from '@sveltejs/kit';
+import { CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
+
+console.log(CLIENT_ID, CLIENT_SECRET)
 
 const oauth2Client = new google.auth.OAuth2(
-    '161714874123-0ak65hus6v6mf6ilfpa50138dpbogha4.apps.googleusercontent.com',
-    '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',
+    CLIENT_ID,
+    CLIENT_SECRET,
     'http://localhost:5173/auth'
 );
 

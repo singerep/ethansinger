@@ -2,13 +2,14 @@ import { redirect } from '@sveltejs/kit';
 import { google } from 'googleapis';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 import { dev } from '$app/environment';
+import { CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
 
 const SCOPES = ['https://www.googleapis.com/auth/documents.readonly'];
 
 // gotta get this outta here
 const oauth2Client = new google.auth.OAuth2(
-    '161714874123-0ak65hus6v6mf6ilfpa50138dpbogha4.apps.googleusercontent.com',
-    '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',
+    CLIENT_ID,
+    CLIENT_SECRET,
     'http://localhost:5173/auth'
 );
 
