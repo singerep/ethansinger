@@ -18,7 +18,6 @@ export async function GET({ cookies, url }) {
     const code = url.searchParams.get('code');
     
     if (code) {
-        // Handle callback
         const { tokens } = await oauth2Client.getToken(code);
         cookies.set('google_session', JSON.stringify(tokens), {
             path: '/',

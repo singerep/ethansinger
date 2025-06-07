@@ -64,7 +64,7 @@
 </script>
 
 <div class="graphic-container" bind:clientWidth={containerWidth}>
-        {@html htmlToRender}
+    {@html htmlToRender}
 </div>
 
 <style>
