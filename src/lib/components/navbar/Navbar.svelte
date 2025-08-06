@@ -50,8 +50,8 @@
                 // {
                 //     collapse: true,
                 //     props: {
-                //         label: 'misc.',
-                //         path: '/misc',
+                //         label: 'pictures',
+                //         path: '/pictures',
                 //     }
                 // }
             ],

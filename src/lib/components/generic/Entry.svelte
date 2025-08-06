@@ -48,6 +48,10 @@
         color: black!important;
     }
 
+    div.byline {
+        margin-top: 2px;
+    }
+
     span.byline, span.byline :global(a) {
         color: #777;
     }
@@ -56,13 +60,13 @@
         margin-top: 5px;
     }
 
-    span.description :global(a) {
+    span.description, span.description :global(a) {
         color: black!important;
     }
 
     span.other, span.other :global(a) {
         color: #777;
-        font-weight: 300;
+        font-weight: 400;
         font-size: 13px;
         /* text-decoration: none; */
     }
