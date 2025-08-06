@@ -19,8 +19,8 @@
 
 testing -->
 
-<script>
+<!-- <script>
     import MyImage from '$lib/gallery/P7030785.jpeg?enhanced';
 </script>
 
-<enhanced:img src="$lib/gallery/P7030785.jpeg" />
+<enhanced:img src="$lib/gallery/P7030785.jpeg" /> -->
