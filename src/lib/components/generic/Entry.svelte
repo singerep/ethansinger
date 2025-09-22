@@ -70,4 +70,9 @@
         font-size: 13px;
         /* text-decoration: none; */
     }
+
+    div.other {
+        padding-top: 3px;
+        line-height: 16px !important;
+    }
 </style>
