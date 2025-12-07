@@ -4,7 +4,7 @@
     const contacts = [
         {
             displayText: 'singerep@bu.edu',
-            link: 'mailto:ethan.singer@nytimes.com',
+            link: 'mailto:singerep@mit.edu',
             icon: '<i class="fa-solid fa-envelope"></i>'
         },
         {
@@ -40,10 +40,13 @@
         margin: 30px 0px;
         width: 100%;
         display: flex;
-        justify-content: space-around;
-        background-color: #688dbc;
-        border-radius: 10px;
-        padding: 13px;
+        justify-content: center;
+        gap: 25px;
+        /* border-width: 1.5px;
+        border-color: #333;
+        border-style: solid;
+        border-radius: 8px;
+        padding: 13px; */
         box-sizing: border-box;
     }
 
@@ -52,7 +55,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        color: white;
+        color: black;
         text-decoration: none;
         font-weight: 500;
         gap: 5px
@@ -70,7 +73,7 @@
     }
 
     div.contact-icon {
-        color: white;
+        color: black;
         font-size: 23px;
     }
 </style>

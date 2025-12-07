@@ -138,7 +138,7 @@
         align-items: center;
         width: calc(100% - 40px);
         height: 60px;
-        max-width: 800px;
+        max-width: calc(var(--body-width) - 40px);
         margin: 0px auto;
     }
 
