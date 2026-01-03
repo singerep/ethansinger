@@ -12,7 +12,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.5.27",
+		"@sveltejs/kit": "^2.7",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/eslint": "^9.6.0",
 		"eslint": "^9.0.0",
@@ -41,6 +41,7 @@
 		"googleapis": "^105.0.0",
 		"inquirer": "^10.1.8",
 		"jsdom": "^25.0.0",
+		"lodash-es": "^4.17.22",
 		"prompt-sync": "^4.2.0",
 		"prompts": "^2.4.2"
 	}

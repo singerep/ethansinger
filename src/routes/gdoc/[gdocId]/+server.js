@@ -1,12 +1,12 @@
-import { page } from '$app/stores'; 
 import pkg from 'archieml'
 import { dev } from '$app/environment';
 import { mkdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import routes from '$lib/cms/routes.json'
 import { error } from '@sveltejs/kit';
+import { isEqual } from 'lodash-es';
 
-const blockFiles = import.meta.glob('$lib/pages/**/blocks.json')
+const blockFiles = import.meta.glob('$lib/cms/blocks/*.json')
 
 function readParagraphElement(element) {
     const textRun = element.textRun;
@@ -67,41 +67,36 @@ function readElements(document) {
     return text;
 }
 
-export async function load({ url, route, params, locals }) {
-    if (!(`/${params.path}` in routes)) {
-        throw error(404, 'Page not found');
-    }
 
-    const pagePathParts = params.path.split('/').map(p => p == '' ? 'index' : p)
+export async function GET({ url, params, locals }) {
+	const gdocId = params.gdocId;
+    const blockFile = join('/src', 'lib', 'cms', 'blocks', `${gdocId}.json`)
+
     let blocks;
-
-    if (dev) {
-        // TODO: this should check if page is a gdoc first
-        const documentId = routes[`/${params.path}`].gdocId
-        const document = await locals.docsClient.documents.get({
-            documentId
-        });
-
-        const text = `[+blocks]\n${readElements(document.data)}\n[]`;
-        blocks = pkg.load(text).blocks
-
-        const path = join('src', 'lib', 'pages', ...pagePathParts)
-        if (!existsSync(path)) {
-            mkdirSync(path, {recursive: true})
-        }
-
-        // only should do this if it has changed
-        writeFileSync(join(path, 'blocks.json'), JSON.stringify(blocks))
-    }
-    else {
-        const path = Object.keys(blockFiles).find(f => f.includes(`pages/${pagePathParts.join('/')}`))
-        blocks = await blockFiles[path]().then((mod) => {
+    if (blockFile in blockFiles) {
+        blocks = await blockFiles[blockFile]().then((mod) => {
             return mod.default
         })
     }
 
-    return {
-        'blocks': blocks,
-        'pagePath': params.path
-    }
+	if (dev) {
+		// TODO: this should check if page is a gdoc first
+		const document = await locals.docsClient.documents.get({
+			documentId: gdocId
+		});
+
+        // console.log(document);
+
+		const text = `[+blocks]\n${readElements(document.data)}\n[]`;
+		const newBlocks = pkg.load(text).blocks
+
+        if (!isEqual(newBlocks, blocks)) {
+            console.log('writing');
+            blocks = newBlocks
+            writeFileSync(blockFile.slice(1), JSON.stringify(blocks))
+        }
+	}
+
+	return Response.json({ blocks });
+	// return {test: 5}
 }
