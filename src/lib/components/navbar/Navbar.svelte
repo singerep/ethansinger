@@ -47,13 +47,13 @@
                         path: '/#teaching',
                     }
                 },
-                {
-                    collapse: true,
-                    props: {
-                        label: 'misc.',
-                        path: '/pages/misc',
-                    }
-                }
+                // {
+                //     collapse: true,
+                //     props: {
+                //         label: 'misc.',
+                //         path: '/pages/misc',
+                //     }
+                // }
             ],
             style: 'justify-content: flex-end; gap: 30px;'
         }
