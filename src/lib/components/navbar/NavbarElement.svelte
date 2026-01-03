@@ -33,6 +33,6 @@
     span {
         position: relative;
         text-align: center;
-        top: calc(((-1em / 1.25) + 1ex) / 2);
+        top: calc(((-1em / 1.25) + 2ex) / 2);
     }
 </style>
