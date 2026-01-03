@@ -1,8 +1,13 @@
 <script>
     import '../styles/app.css'
+    import { dev } from '$app/environment';
+
+    import { injectAnalytics } from '@vercel/analytics/sveltekit'
 
     import Navbar from '$lib/components/navbar/Navbar.svelte'
     import Footer from '$lib/components/footer/Footer.svelte'
+
+    injectAnalytics({ mode: dev ? 'development' : 'production' });
 
     function handleError() {
         console.log('here')
