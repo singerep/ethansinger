@@ -1,12 +1,12 @@
 <script>
-    import scannedNotes from '$lib/pages/woodworking/bookshelf-lamp/images/scanned-notes.png';
-    import firstSketch from '$lib/pages/woodworking/bookshelf-lamp/images/first-sketch.png';
-    import right from '$lib/pages/woodworking/bookshelf-lamp/images/P1172285.jpg'
-    import front from '$lib/pages/woodworking/bookshelf-lamp/images/FRONT-MERGE.jpg'
-    import books from '$lib/pages/woodworking/bookshelf-lamp/images/P1172235.jpg'
-    import bookEdge from '$lib/pages/woodworking/bookshelf-lamp/images/P1172247.jpg'
-    import corner from '$lib/pages/woodworking/bookshelf-lamp/images/P1172315.jpg'
-    import glassCorner from '$lib/pages/woodworking/bookshelf-lamp/images/P1172316.jpg'
+    import scannedNotes from '$lib/pages/woodworking/bookshelf-lamp/images/scanned-notes.png?enhanced';
+    import firstSketch from '$lib/pages/woodworking/bookshelf-lamp/images/first-sketch.png?enhanced';
+    import right from '$lib/pages/woodworking/bookshelf-lamp/images/P1172285.jpg?enhanced'
+    import front from '$lib/pages/woodworking/bookshelf-lamp/images/FRONT-MERGE.jpg?enhanced'
+    import books from '$lib/pages/woodworking/bookshelf-lamp/images/P1172235.jpg?enhanced'
+    import bookEdge from '$lib/pages/woodworking/bookshelf-lamp/images/P1172247.jpg?enhanced'
+    import corner from '$lib/pages/woodworking/bookshelf-lamp/images/P1172315.jpg?enhanced'
+    import glassCorner from '$lib/pages/woodworking/bookshelf-lamp/images/P1172316.jpg?enhanced'
     import Project from '../Project.svelte';
 </script>
 
@@ -28,7 +28,10 @@
 
 
 <style>
-    img {
+    :global(picture img) {
         width: 100%;
+        max-width: 100%;
+        height: auto;
+        display: block;
     }
 </style>

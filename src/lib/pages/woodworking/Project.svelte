@@ -22,7 +22,7 @@
         <enhanced:img src={thumbnail} alt="{name}" />
     </div>
     {#if isOpen}
-        <div class="content" transition:slide>
+        <div class="content">
             {@render children()}
         </div>
     {/if}
