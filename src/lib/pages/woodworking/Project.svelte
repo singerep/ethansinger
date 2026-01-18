@@ -53,5 +53,6 @@
         font-weight: 500;
         cursor: pointer;
         text-decoration: underline;
+        color: black !important;
     }
 </style>
