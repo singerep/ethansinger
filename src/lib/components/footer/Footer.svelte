@@ -19,6 +19,7 @@
         padding: 20px 0px;
         color: white;
         font-weight: 300;
+        flex-shrink: 0;
     }
 
     div.footer-content {
