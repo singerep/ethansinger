@@ -15,24 +15,18 @@
 }
 
 @font-face {
-    font-family: 'Geist';
-    font-style: normal;
-    font-weight: 100 900;
-    src: local(''), url('/fonts/Geist-1.3.0/variable-woff/GeistVF.woff2') format('woff2'),
-        url('/fonts/Geist-1.3.0/variable-woff/GeistVF.woff') format('woff'),
-}
-
-@font-face {
     font-family: 'CMU Serif';
     font-style: normal;
     font-weight: 500;
+    font-display: swap;
     src: url('/fonts/cmu-serif/cmunrm.woff2') format('woff2')
 }
 
 @font-face {
     font-family: 'CMU Serif';
-    font-style: bold;
-    font-weight: 900;
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
     src: url('/fonts/cmu-serif/cmunbx.woff2') format('woff2')
 }
 
@@ -44,7 +38,7 @@ html {
 
 body {
 	margin: 0px;
-	font-family: 'CMU Serif';
+	font-family: 'CMU Serif', Georgia, 'Times New Roman', serif;
 	scroll-padding-top: 200px;
     height: 100%;
 }

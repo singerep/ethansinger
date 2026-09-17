@@ -1,53 +1,50 @@
 <script>
-	import { onMount } from 'svelte';
     import Ai2Html from '$lib/components/pageLibrary/Ai2Html.svelte';
     import Img from '$lib/components/pageLibrary/Img.svelte';
 
-    const { gdocId, pagePath } = $props();
+    // `blocks` now arrive from the prerendered page load, so the content is in
+    // the initial HTML instead of being fetched on the client after hydration.
+    const { blocks = [], pagePath } = $props();
 
-    let blocks = $state([])
-    const components = $state({})
     const assets = $state({})
 
-    onMount(async () => {
-        const gdoc = await fetch(`/gdoc/${gdocId}`);
-        const gdocJson = await gdoc.json()
-        blocks = gdocJson.blocks;
-    })
+    const toName = (path) => path.split('/').pop().split('.')[0]
 
-    const genericComponents = Object.entries(import.meta.glob('$lib/components/generic/*.svelte'))
-    const pageComponents = Object.entries(
-        import.meta.glob('$lib/pages/**/*.svelte')
-    ).filter(f => f[0].includes(`pages/${pagePath}`))
-    
-    const usedComponents = $derived(
-        Object.fromEntries(
-            [...new Set(blocks.filter(b => b.type == 'svelte').map(b => b.value.component))].map(c => 
-                pageComponents.find(([f, load]) => f.split('/').pop().split('.')[0] == c) ?? // preference for page specific components
-                genericComponents.find(([f, load]) => f.split('/').pop().split('.')[0] == c) ??
-                null
-            )
-        )
+    // Generic components are shared and lightweight — import them eagerly so they
+    // render during SSR/prerender (their content ships in the static HTML).
+    const genericModules = import.meta.glob('$lib/components/generic/*.svelte', { eager: true })
+    const genericByName = Object.fromEntries(
+        Object.entries(genericModules).map(([f, mod]) => [toName(f), mod.default])
+    )
+
+    // Page-specific components can be heavy (e.g. image galleries), so keep them
+    // lazily code-split per page and hydrate them on the client after mount.
+    const pageModules = import.meta.glob('$lib/pages/**/*.svelte')
+    const pageLoaders = Object.entries(pageModules).filter(([f]) => f.includes(`/pages/${pagePath}/`))
+    const pageComponentNames = new Set(pageLoaders.map(([f]) => toName(f)))
+
+    const components = $state({})
+
+    const usedPageLoaders = $derived(
+        [...new Set(blocks.filter(b => b.type === 'svelte').map(b => b.value.component))]
+            .map(name => pageLoaders.find(([f]) => toName(f) === name))
+            .filter(Boolean)
     )
 
     $effect(() => {
-        Object.entries(usedComponents).forEach(async ([f, load]) => {
-            const name = f.split('/').pop().split('.')[0]
-            load().then((mod) => {
-                components[name] = mod.default
-            })
+        usedPageLoaders.forEach(([f, load]) => {
+            const name = toName(f)
+            if (components[name]) return
+            load().then((mod) => { components[name] = mod.default })
         })
-
-        // await data.assets.forEach(async (f) => {
-    //     //     // should check for duplicate names here
-    //     //     const name = f.split('/').pop().split('.')[0]
-    //     //     const url = f.split('static').pop()
-    //     //     if (name in assets) {
-    //     //         console.error('Duplicate asset name:', name)
-    //     //     }
-    //     //     assets[name] = url
-    //     // })
     })
+
+    // A page-specific component (if one exists for this name) always wins; it
+    // loads lazily, so it's null until mounted. Otherwise use the eager generic.
+    function resolveComponent(name) {
+        if (pageComponentNames.has(name)) return components[name] ?? null
+        return genericByName[name] ?? null
+    }
 
     function componentProps(block) {
         const { component, ...rest } = block.value
@@ -79,7 +76,9 @@
                     <Img src={assets[block.value.media]} {...imgProps(block)} />
                 {/if}
             {:else if block.type == 'svelte'}
-                <svelte:component this={components[block.value.component]} {...componentProps(block)} />
+                {#if resolveComponent(block.value.component)}
+                    <svelte:component this={resolveComponent(block.value.component)} {...componentProps(block)} />
+                {/if}
             {/if}
         {/each}
     {/if}

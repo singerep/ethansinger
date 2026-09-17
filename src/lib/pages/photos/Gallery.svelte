@@ -62,7 +62,7 @@
             date: "July 2025"
         },
         "P7070898": {
-            location: "Hoh Rain Forest, WA", // mossy tree
+            location: "Hoh National Rain Forest, WA", // mossy tree
             date: "July 2025"
         },
         "P7221525": {
